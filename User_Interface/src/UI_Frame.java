@@ -19,7 +19,7 @@ public class UI_Frame {
 		
 		//set default exit process
 		uiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		uiFrame.setTitle("IEC61499 Debug");
 		uiFrame.setSize(sr.getWidth(), sr.getHeight());
 		
 		// set the frame always showed at the center point of the screen.
