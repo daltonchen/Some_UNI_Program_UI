@@ -1,0 +1,2 @@
+INDEX VERSION 1.131+/Users/daltonchen/Documents/GitHub/Some_UNI_Program_UI/.metadata/.plugins/org.eclipse.jdt.core
+2711886945.index

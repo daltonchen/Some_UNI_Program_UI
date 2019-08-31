@@ -1,0 +1,73 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.LayoutManager;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
+
+public class UI_Frame {
+	
+	JFrame uiFrame;
+	JPanel uiPanel;
+	
+	public void ShowFrame() {
+		
+		uiFrame = new JFrame();
+		uiPanel = new JPanel();
+		
+		// get user's screen resolution
+		ScreenResolution sr = getScreenResolution();
+		
+		//set default exit process
+		uiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		uiFrame.setTitle("IEC61499 Debug");
+		uiFrame.setSize(sr.getWidth(), sr.getHeight());
+		uiFrame.setLayout(new BorderLayout());
+		
+		//Test Component, remove it before final product
+		JPanel panel = new JPanel();
+		panel.setBackground(Color.black);
+		panel.setPreferredSize(new Dimension(300, 300));
+		panel.setBorder(BorderFactory.createTitledBorder("Hello"));
+		uiFrame.add(panel,BorderLayout.WEST);
+		
+		JPanel p2 = new JPanel();
+		p2.setBackground(Color.WHITE);
+		p2.setPreferredSize(new Dimension(300, 300));
+		uiFrame.add(p2,BorderLayout.CENTER);
+		
+		// set the frame always showed at the center point of the screen.
+		uiFrame.setLocationRelativeTo(null);
+		uiFrame.setVisible(true);
+	}
+	
+	public ScreenResolution getScreenResolution() {
+		
+		// the default screenresolution value would be 1000 * 1000;
+		ScreenResolution sr = new ScreenResolution();
+		
+		try {
+			// get multi-monitor configuration (default one)
+			GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+			
+			sr.setWidth(gd.getDisplayMode().getWidth());
+			sr.setHeight(gd.getDisplayMode().getHeight());
+			
+		} catch(Error e) {
+			System.err.println(e.getLocalizedMessage());
+			System.err.println("Could Not Found Monitor, Default Size will be used.");
+		}
+		
+		return sr;
+	}
+}
