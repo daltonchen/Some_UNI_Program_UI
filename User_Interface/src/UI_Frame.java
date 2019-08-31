@@ -1,8 +1,26 @@
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.LayoutManager;
+import java.awt.ScrollPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.PseudoColumnUsage;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
+
 
 public class UI_Frame {
 	
@@ -19,8 +37,35 @@ public class UI_Frame {
 		
 		//set default exit process
 		uiFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		uiFrame.setTitle("IEC61499 Debug");
 		uiFrame.setSize(sr.getWidth(), sr.getHeight());
+		uiFrame.setLayout(new BorderLayout());
+		
+		//Test Component, remove it before final product
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(300, 300));
+		panel.setBorder(BorderFactory.createTitledBorder("Panel 1"));
+		uiFrame.add(panel,BorderLayout.WEST);
+		
+		
+		
+		DisplayCanvas cvs = new DisplayCanvas();
+		cvs.setBackground(Color.WHITE);
+		cvs.setAutoscrolls(true);
+		cvs.setPreferredSize(new Dimension(3000, 3000));
+		cvs.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent event) {
+				System.out.println(event.getX());
+				System.out.println(event.getY());
+			}
+		});
+		//uiFrame.add(cvs,BorderLayout.CENTER);
+		JScrollPane scroll = new JScrollPane(cvs, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		scroll.setBorder(BorderFactory.createTitledBorder("Panel 2"));
+		
+		uiFrame.add(scroll,BorderLayout.CENTER);
 		
 		// set the frame always showed at the center point of the screen.
 		uiFrame.setLocationRelativeTo(null);
@@ -46,4 +91,5 @@ public class UI_Frame {
 		
 		return sr;
 	}
+	
 }
