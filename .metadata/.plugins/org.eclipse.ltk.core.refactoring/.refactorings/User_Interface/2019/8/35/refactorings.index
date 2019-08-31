@@ -1,1 +1,5 @@
 1567149651707	Delete element
+1567235830363	Encapsulate field 'LocationY'
+1567235837331	Encapsulate field 'LocationX'
+1567236762378	Rename type 'FunctionBlockCoordinate'
+1567236864538	Rename type 'FunctionBlockCoordinate'
