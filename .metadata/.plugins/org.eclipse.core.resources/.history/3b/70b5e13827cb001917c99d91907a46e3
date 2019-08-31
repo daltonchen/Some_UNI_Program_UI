@@ -1,0 +1,11 @@
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+public class DisplayCanvas extends JPanel{
+
+	@Override 
+	public void paintComponent(Graphics g) {
+		g.drawLine(30, 40, 100, 200);
+	}
+}
