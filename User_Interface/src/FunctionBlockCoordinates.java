@@ -24,7 +24,7 @@ public class FunctionBlockCoordinates {
 
 		for (int i = 1; i < fbcoordinates.length - 1; i++) {
 			
-			xyCalculator(i);
+			xyCalculator(i, fb);
 			
 			if (i % 2 == 1) {
 				// if the number is the odd number, means that the y coordinate of this one will be same as previous one
@@ -63,14 +63,21 @@ public class FunctionBlockCoordinates {
 		return yArray;
 	}
 	
-	public void xyCalculator(int i) {
+	public void xyCalculator(int i, FunctionBlock fb) {
 		
 		int number = i;
+		int fbNameLength = (int)(fb.getFBName().length() * 5.5f);
+		
+//		if (fbNameLength >= 90) {
+//			fbNameLength += 5;
+//		}
+
+		System.out.println(fbNameLength);
 		
 		switch(number) {
 			case 1:
 				// case 1 means location 2, this number should be same as location 8
-				fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX + 100;
+				fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX + 60 + fbNameLength;
 				break;
 			case 2:
 				// case 2 means location 3
@@ -98,7 +105,7 @@ public class FunctionBlockCoordinates {
 				break;
 			case 7:
 				//case 7 means location 8, this number should be same as location 2
-				fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX - 100;
+				fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX - 60 - fbNameLength;
 				break;
 			case 8:
 				// case 8 means location 9
@@ -109,6 +116,13 @@ public class FunctionBlockCoordinates {
 				fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY - 20;
 				break;
 		}
+	}
+	
+	public Coordinate getFBNameCoordinate() {
+		
+		Coordinate coor = new Coordinate(this.fbcoordinates[10].coordinateX + 12, this.fbcoordinates[10].coordinateY + 15);
+		
+		return coor;
 	}
 	
 	// test
