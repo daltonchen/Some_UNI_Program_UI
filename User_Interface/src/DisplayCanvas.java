@@ -13,7 +13,7 @@ public class DisplayCanvas extends JPanel{
 
 	FunctionBlock fb = new FunctionBlock();
 	FunctionBlockCoordinates coor = new FunctionBlockCoordinates();
-	FunctionBlock fb2 = new FunctionBlock(600, 900);
+	FunctionBlock fb2 = new FunctionBlock(600, 900,"test test test test");
 	FunctionBlockCoordinates coor2 = new FunctionBlockCoordinates();
 	
 	@Override 
@@ -24,10 +24,12 @@ public class DisplayCanvas extends JPanel{
 		coor.CoordinateCalculator(fb);
 		
 		g.drawPolygon(coor.getXCoorArray(), coor.getYCoorArray(), coor.getXCoorArray().length);
+		g.drawString(fb.getFBName(), coor.getFBNameCoordinate().coordinateX, coor.getFBNameCoordinate().coordinateY);
 		
 		coor2.CoordinateCalculator(fb2);
 		
 		g.drawPolygon(coor2.getXCoorArray(), coor2.getYCoorArray(), coor2.getXCoorArray().length);
+		g.drawString(fb2.getFBName(), coor2.getFBNameCoordinate().coordinateX, coor2.getFBNameCoordinate().coordinateY);
 		
 	}
 	
