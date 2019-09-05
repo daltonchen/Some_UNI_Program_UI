@@ -4,16 +4,13 @@ import javax.swing.JPanel;
 public class LaunchPanel{
 	
 
-	public static void main(String[] args) {
-		System.out.println("Hello World");
-		
-		UI_Frame frame = new UI_Frame();
-		
-		frame.ShowFrame();
+    public static void main(String[] args) {
+            System.out.println("Hello World");
 
-	}
-	
-	
-	
+            UI_Frame frame = new UI_Frame();
+
+            frame.ShowFrame();
+
+    }
 
 }
