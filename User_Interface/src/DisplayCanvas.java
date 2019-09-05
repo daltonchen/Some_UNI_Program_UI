@@ -1,36 +1,21 @@
+
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+public class DisplayCanvas extends JPanel {
 
-
-public class DisplayCanvas extends JPanel{
-	
-	//int[] x = {30,150,150,135,135,150,150,30,30,45,45,30,30};
-	//int[] y = {60,60,120,120,135,135,195,195,135,135,120,120,60};
-
-	FunctionBlock fb = new FunctionBlock();
-	FunctionBlockCoordinates coor = new FunctionBlockCoordinates();
-	FunctionBlock fb2 = new FunctionBlock(600, 900,"test test test test");
-	FunctionBlockCoordinates coor2 = new FunctionBlockCoordinates();
-	
-	@Override 
-	public void paintComponent(Graphics g) {
-		//g.drawRoundRect(60, 60, 60, 80, 20, 20);
-		//g.drawPolygon(x, y, x.length);
-		
-		coor.CoordinateCalculator(fb);
-		
-		g.drawPolygon(coor.getXCoorArray(), coor.getYCoorArray(), coor.getXCoorArray().length);
-		g.drawString(fb.getFBName(), coor.getFBNameCoordinate().coordinateX, coor.getFBNameCoordinate().coordinateY);
-		
-		coor2.CoordinateCalculator(fb2);
-		
-		g.drawPolygon(coor2.getXCoorArray(), coor2.getYCoorArray(), coor2.getXCoorArray().length);
-		g.drawString(fb2.getFBName(), coor2.getFBNameCoordinate().coordinateX, coor2.getFBNameCoordinate().coordinateY);
-		
-	}
-	
+    FunctionBlock fb = new FunctionBlock();
+    DrawFunctionBlock draw = new DrawFunctionBlock(fb);
+    
+    public DisplayCanvas(){
+        draw.setLocation(fb.getLocationX(), fb.getLocationY());
+        this.add(draw);
+        
+    }
 }
