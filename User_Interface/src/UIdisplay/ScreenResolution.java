@@ -1,3 +1,5 @@
+package UIdisplay;
+
 /**
  * This class is designed to hold the screen resolution information,this class will be used when generates
  * the frame, it will set a default resoulution of width of 1000 and height of 1000, 
