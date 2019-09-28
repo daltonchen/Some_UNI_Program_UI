@@ -1,3 +1,5 @@
+package UIdisplay;
+
 public class Coordinate {
 	public int coordinateX;
 	public int coordinateY;

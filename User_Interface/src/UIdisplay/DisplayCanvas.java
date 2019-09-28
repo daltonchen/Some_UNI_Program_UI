@@ -1,6 +1,9 @@
+package UIdisplay;
+
 
 import FileReading.SystemInfo;
 import FileReading.functionBlock;
+import FileReading.readIndividualFB;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,6 +30,9 @@ public class DisplayCanvas extends JPanel {
         ArrayList<functionBlock> fbs = info.getFunctionBlocks();
         
         for(functionBlock fb : fbs){
+            //readIndividualFB information, the xml should later being change to appropriate one
+            readIndividualFB readFB = new readIndividualFB(fb.getName().toUpperCase() + ".fbt", fb);
+                    
             DrawFunctionBlock drawFB = new DrawFunctionBlock(fb);
             
             int intX = (int)fb.getLocationX() / 2;
@@ -38,14 +44,4 @@ public class DisplayCanvas extends JPanel {
         
         
     }
-    
-    
-
-//    FunctionBlock fb = new FunctionBlock();
-//    DrawFunctionBlock draw = new DrawFunctionBlock(fb);
-//    
-//    public DisplayCanvas(){
-//        draw.setLocation(fb.getLocationX(), fb.getLocationY());
-//        this.add(draw);
-//    }
 }

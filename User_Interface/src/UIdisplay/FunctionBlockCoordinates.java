@@ -1,5 +1,9 @@
+package UIdisplay;
 
+
+import FileReading.Event;
 import FileReading.functionBlock;
+import java.util.ArrayList;
 
 
 /*
@@ -18,12 +22,8 @@ public class FunctionBlockCoordinates {
     // new port! fix them~
     private functionBlock fb;
     private Coordinate size;
-    private Coordinate functionBlockNameCoordinates;
-    private Coordinate[] inputEventCoordinates;
-    private Coordinate[] outputEventCoordinates;
-    private Coordinate[] inputDataCoordinates;
-    private Coordinate[] outputDataCoordinates;
     private Coordinate[] fbcoordinates;
+    private int fbNameLength;
 
     public FunctionBlockCoordinates(functionBlock fb) {
         this.fb = fb;
@@ -33,7 +33,7 @@ public class FunctionBlockCoordinates {
             fbcoordinates[i] = new Coordinate(0, 0);
         }
         DrawingCoordinateCalculator();
-//        NodeCoordinateCalculator();
+        NodeCoordinateCalculator();
     }
 
     public void DrawingCoordinateCalculator() {
@@ -63,31 +63,26 @@ public class FunctionBlockCoordinates {
 
     }
     
-//    public void NodeCoordinateCalculator(){
-//        
-//        //Event Input
-//        int length = fb.getEinputNodes().length;
-//        this.inputEventCoordinates = new Coordinate[length];
-//        
-//        for(int i = 0; i < length; i++){
-//            
-//            Coordinate coor;
-//            
-//            if (i == 0){
-//                coor = new Coordinate(3, 5);
-//            } else {
-//                coor = new Coordinate(3, this.inputEventCoordinates[i - 1].coordinateY + 15);
-//            }
-//            
-//            inputEventCoordinates[i] = coor;
-//        }
-//        
-//    }
+    
+    public void NodeCoordinateCalculator(){
+        
+        if(this.fb.getInputEvent() != null){
+            //Event Input
+            for(int i = 0; i < this.fb.getInputEvent().size(); i++){
+
+                Coordinate coor = new Coordinate(3, 10 + 15 * i);
+
+                this.fb.getInputEvent().get(i).setCoordinate(coor);
+
+            }
+        }
+        
+    }
 
     public void xyCalculator(int i) {
 
         int number = i;
-        int fbNameLength = (int) (this.fb.getName().length() * 7f);
+        fbNameLength = (int) (this.fb.getName().length() * 7f);
 
         switch (number) {
             case 1:
@@ -166,20 +161,5 @@ public class FunctionBlockCoordinates {
         return yArray;
     }
 
-    public Coordinate[] getInputEventCoordinates() {
-        return inputEventCoordinates;
-    }
-
-    public Coordinate[] getOutputEventCoordinates() {
-        return outputEventCoordinates;
-    }
-
-    public Coordinate[] getInputDataCoordinates() {
-        return inputDataCoordinates;
-    }
-
-    public Coordinate[] getOutputDataCoordinates() {
-        return outputDataCoordinates;
-    }
     
 }

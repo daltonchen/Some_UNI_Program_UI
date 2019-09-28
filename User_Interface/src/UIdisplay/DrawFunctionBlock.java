@@ -1,3 +1,5 @@
+package UIdisplay;
+
 
 import FileReading.functionBlock;
 import java.awt.Color;
@@ -31,7 +33,7 @@ public class DrawFunctionBlock extends JPanel {
 
         setupPanel();
         drawFBnameLabel();
-//        drawNodes();
+        drawNodes();
     }
 
     public void setupPanel() {
@@ -47,23 +49,25 @@ public class DrawFunctionBlock extends JPanel {
         this.add(NameLabel);
     }
     
-//    public void drawNodes(){
-//        
-//        //event input
-//        for(int i = 0; i < this.fb.getEinputNodes().length; i++){
-//            
-//            Coordinate coor = fbCoordinates.getInputEventCoordinates()[i];
-//            
-//            JButton button = new JButton();
-//            button.setSize(10, 10);
-//            button.setOpaque(true);
-//            button.setBorderPainted(false);
-//            button.setBackground(Color.PINK);
-//            button.setLocation(coor.coordinateX, coor.coordinateY);
-//            this.add(button);
-//        }
-//        
-//    }
+    public void drawNodes(){
+        
+        if(this.fb.getInputEvent() != null){
+
+            //event input
+            for(int i = 0; i < this.fb.getInputEvent().size(); i++){
+
+                JButton button = new JButton();
+                button.setSize(10, 10);
+                button.setOpaque(true);
+                button.setBorderPainted(false);
+                button.setBackground(Color.RED);
+                button.setLocation(this.fb.getInputEvent().get(i).getCoordinate().coordinateX, this.fb.getInputEvent().get(i).getCoordinate().coordinateY);
+                this.add(button);
+            }
+        }
+        
+        
+    }
 
     @Override
     public void paintComponent(Graphics g) {
