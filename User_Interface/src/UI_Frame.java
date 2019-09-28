@@ -1,4 +1,6 @@
 
+import FileReading.ReadSys;
+import FileReading.SystemInfo;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import org.dom4j.DocumentException;
 
 public class UI_Frame {
 
@@ -37,7 +40,7 @@ public class UI_Frame {
         //Test Component, remove it before final product
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(300, 300));
-        panel.setBorder(BorderFactory.createTitledBorder("Panel 1"));
+        panel.setBorder(BorderFactory.createTitledBorder("Control Panel"));
         uiFrame.add(panel, BorderLayout.WEST);
         
 //        JButton button = new JButton("");
@@ -47,10 +50,23 @@ public class UI_Frame {
 //        button.setLocation(302, 320);
 //        button.setSize(10, 10);
 
-        DisplayCanvas cvs = new DisplayCanvas();
-        cvs.setBackground(Color.WHITE);
-        cvs.setAutoscrolls(true);
-        cvs.setLayout(null);
+        // this part only designed for test, please remove this part if the development is finished.
+        
+        SystemInfo sysInfo = null;
+        
+        try{
+            ReadSys rd = new ReadSys();
+            sysInfo = rd.SysRead();
+        } catch (DocumentException e){
+            System.err.println(e);
+        }
+        
+        if(sysInfo == null){
+            // later change to dialog-window
+            System.err.println("unable to get information from document!");
+        }
+
+        DisplayCanvas cvs = new DisplayCanvas(sysInfo);
         cvs.setPreferredSize(new Dimension(3000, 3000));
         cvs.addMouseListener(new MouseAdapter() {
             @Override
@@ -64,7 +80,7 @@ public class UI_Frame {
 
         JScrollPane scroll = new JScrollPane(cvs, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        scroll.setBorder(BorderFactory.createTitledBorder("Panel 2"));
+        scroll.setBorder(BorderFactory.createTitledBorder("Canvas"));
 
         uiFrame.add(scroll, BorderLayout.CENTER);
 

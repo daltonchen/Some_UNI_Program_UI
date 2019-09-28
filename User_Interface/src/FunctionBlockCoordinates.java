@@ -1,8 +1,10 @@
 
+import FileReading.functionBlock;
+
+
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * This class will automatically calculate the coordinate information for the function block
+ * it will later being used for drawing.
  */
 
 /**
@@ -14,7 +16,7 @@ public class FunctionBlockCoordinates {
 
     
     // new port! fix them~
-    private FunctionBlock fb;
+    private functionBlock fb;
     private Coordinate size;
     private Coordinate functionBlockNameCoordinates;
     private Coordinate[] inputEventCoordinates;
@@ -23,7 +25,7 @@ public class FunctionBlockCoordinates {
     private Coordinate[] outputDataCoordinates;
     private Coordinate[] fbcoordinates;
 
-    public FunctionBlockCoordinates(FunctionBlock fb) {
+    public FunctionBlockCoordinates(functionBlock fb) {
         this.fb = fb;
         fbcoordinates = new Coordinate[13];
 
@@ -31,7 +33,7 @@ public class FunctionBlockCoordinates {
             fbcoordinates[i] = new Coordinate(0, 0);
         }
         DrawingCoordinateCalculator();
-        NodeCoordinateCalculator();
+//        NodeCoordinateCalculator();
     }
 
     public void DrawingCoordinateCalculator() {
@@ -61,31 +63,31 @@ public class FunctionBlockCoordinates {
 
     }
     
-    public void NodeCoordinateCalculator(){
-        
-        //Event Input
-        int length = fb.getEinputNodes().length;
-        this.inputEventCoordinates = new Coordinate[length];
-        
-        for(int i = 0; i < length; i++){
-            
-            Coordinate coor;
-            
-            if (i == 0){
-                coor = new Coordinate(3, 5);
-            } else {
-                coor = new Coordinate(3, this.inputEventCoordinates[i - 1].coordinateY + 15);
-            }
-            
-            inputEventCoordinates[i] = coor;
-        }
-        
-    }
+//    public void NodeCoordinateCalculator(){
+//        
+//        //Event Input
+//        int length = fb.getEinputNodes().length;
+//        this.inputEventCoordinates = new Coordinate[length];
+//        
+//        for(int i = 0; i < length; i++){
+//            
+//            Coordinate coor;
+//            
+//            if (i == 0){
+//                coor = new Coordinate(3, 5);
+//            } else {
+//                coor = new Coordinate(3, this.inputEventCoordinates[i - 1].coordinateY + 15);
+//            }
+//            
+//            inputEventCoordinates[i] = coor;
+//        }
+//        
+//    }
 
     public void xyCalculator(int i) {
 
         int number = i;
-        int fbNameLength = (int) (this.fb.getFBName().length() * 7f);
+        int fbNameLength = (int) (this.fb.getName().length() * 7f);
 
         switch (number) {
             case 1:
