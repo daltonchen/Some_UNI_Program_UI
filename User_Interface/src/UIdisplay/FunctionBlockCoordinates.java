@@ -4,6 +4,7 @@ package UIdisplay;
 import FileReading.Event;
 import FileReading.functionBlock;
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 /*
@@ -16,14 +17,14 @@ import java.util.ArrayList;
  * @author daltonchen
  */
 
+
 public class FunctionBlockCoordinates {
 
-    
     // new port! fix them~
     private functionBlock fb;
     private Coordinate size;
     private Coordinate[] fbcoordinates;
-    private int fbNameLength;
+//    private int fbNameLength;
 
     public FunctionBlockCoordinates(functionBlock fb) {
         this.fb = fb;
@@ -77,21 +78,108 @@ public class FunctionBlockCoordinates {
             }
         }
         
+        if(this.fb.getOutputEvent() != null){
+            //Event output
+            for(int i = 0; i < this.fb.getInputEvent().size(); i++){
+
+                Coordinate coor = new Coordinate(this.getXCoorArray()[1] - 13, 10 + 15 * i);
+
+                this.fb.getOutputEvent().get(i).setCoordinate(coor);
+
+            }
+        }
+        
+    }
+    
+    public int calculateDrawingLowerHeight(){
+        
+        int lower = 20;
+        
+        if(this.fb.getInputData() != null){
+            
+            if((this.fb.getInputData().size() * 15 + 30) > lower){
+                lower = this.fb.getInputData().size() * 15 + 30;
+            }
+        }
+        if(this.fb.getOutputData() != null){
+            
+            if((this.fb.getOutputData().size() * 15 + 30) > lower){
+                lower = this.fb.getOutputData().size() * 15 + 30;
+            }
+        }
+        
+        return lower;
+    }
+    
+    public int calculateDrawingUpperHeight(){
+        
+        // the default value would be 30, 15 for upper gap and 15 for lower gap
+        int upper = 30;
+        
+        if(this.fb.getInputEvent() != null){
+            
+            int countHeight = this.fb.getInputEvent().size() * 15 + 30;
+            
+            if(countHeight > upper){
+                upper = countHeight;
+            }
+        }
+        
+        if(this.fb.getOutputEvent() != null){
+            
+            int countHeight = this.fb.getOutputEvent().size() * 15 + 30;
+            
+            if(countHeight > upper){
+                upper = countHeight;
+            }
+        }
+        
+        return upper;
+    }
+    
+    public int calculateDrawingWidth(){
+
+        int maximum = (int)(this.fb.getName().length()* 7f);
+        
+        // this method will count the size of the name for the event input as well as the event output, it will able to
+        // provide funtionality that it will automatically adjust based on the length of the text as well as the name.
+        
+        if(this.fb.getInputEvent() != null){
+            for (int i = 0; i < this.fb.getInputEvent().size(); i++){
+                
+                int length = (int)(this.fb.getInputEvent().get(i).getName().length() * 7f);
+                
+                if(this.fb.getOutputEvent().get(i) != null){
+                    length += (int)(this.fb.getOutputEvent().get(i).getName().length() * 7f);
+                }
+                
+                System.out.println(length);
+                if (length > maximum){
+                    maximum = length;
+                }
+            }
+        }
+
+
+
+        return maximum;
     }
 
     public void xyCalculator(int i) {
 
         int number = i;
-        fbNameLength = (int) (this.fb.getName().length() * 7f);
-
+        int drawingWidth = calculateDrawingWidth();
+        int drawingUpperHeight = calculateDrawingUpperHeight();
+        int drawingLowerHeight = calculateDrawingLowerHeight();
+        
         switch (number) {
             case 1:
                 // case 1 means location 2, this number should be same as location 8
-                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX + 60 + fbNameLength;
+                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX + 60 + drawingWidth;
                 break;
             case 2:
                 // case 2 means location 3
-                fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY + 80;
+                fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY + drawingUpperHeight;
                 break;
             case 3:
             case 11:
@@ -111,15 +199,15 @@ public class FunctionBlockCoordinates {
                 break;
             case 6:
                 // case 6 means location 7
-                fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY + 30;
+                fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY + drawingLowerHeight;
                 break;
             case 7:
                 //case 7 means location 8, this number should be same as location 2
-                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX - 60 - fbNameLength;
+                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX - 60 - drawingWidth;
                 break;
             case 8:
                 // case 8 means location 9
-                fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY - 30;
+                fbcoordinates[number].coordinateY = fbcoordinates[number - 1].coordinateY - drawingLowerHeight;
                 break;
             case 10:
                 // case 10 means location 11, this number should be fixed at 20.
@@ -127,6 +215,7 @@ public class FunctionBlockCoordinates {
                 break;
         }
     }
+    
 
     public Coordinate getFBNameCoordinate() {
 
@@ -163,3 +252,4 @@ public class FunctionBlockCoordinates {
 
     
 }
+
