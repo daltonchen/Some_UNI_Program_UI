@@ -89,6 +89,30 @@ public class FunctionBlockCoordinates {
             }
         }
         
+        if(this.fb.getInputData() != null){
+            
+            //for data input
+            for(int i = 0; i < this.fb.getInputData().size(); i++){
+                
+                Coordinate coor = new Coordinate(3, this.getYCoorArray()[9] + 10 + 15 * i);
+                
+                this.fb.getInputData().get(i).setCoordinate(coor);
+                
+                System.out.println(coor.coordinateY);
+            }
+        }
+        
+        if(this.fb.getOutputData() != null){
+            
+            // for data output
+            for(int i = 0; i < this.fb.getOutputData().size(); i++){
+                
+                Coordinate coor = new Coordinate(this.getXCoorArray()[1] - 13, this.getYCoorArray()[9] + 10 + 15 * i);
+                
+                this.fb.getOutputData().get(i).setCoordinate(coor);
+            }
+        }
+        
     }
     
     public int calculateDrawingLowerHeight(){
@@ -145,6 +169,7 @@ public class FunctionBlockCoordinates {
         // provide funtionality that it will automatically adjust based on the length of the text as well as the name.
         
         if(this.fb.getInputEvent() != null){
+            
             for (int i = 0; i < this.fb.getInputEvent().size(); i++){
                 
                 int length = (int)(this.fb.getInputEvent().get(i).getName().length() * 7f);
@@ -153,7 +178,46 @@ public class FunctionBlockCoordinates {
                     length += (int)(this.fb.getOutputEvent().get(i).getName().length() * 7f);
                 }
                 
-                System.out.println(length);
+                if (length > maximum){
+                    maximum = length;
+                }
+            }
+        }
+        
+        if(this.fb.getOutputEvent() != null){
+            for(int i = 0; i < this.fb.getOutputEvent().size(); i++){
+                
+                int length = (int)(this.fb.getOutputEvent().get(i).getName().length() * 7f);
+                
+                if (length > maximum){
+                    maximum = length;
+                }
+            }
+        }
+        
+        
+        if(this.fb.getInputData() != null){
+
+            for(int i = 0; i < this.fb.getInputData().size(); i++){
+                
+                int length = (int)(this.fb.getInputData().get(i).getName().length() * 7f);
+                
+                if(this.fb.getOutputData() != null){
+                    length += (int)(this.fb.getOutputData().get(i).getName().length() * 7f);
+                }
+                
+                if(length > maximum){
+                    maximum = length;
+                }
+            }
+
+        }
+        
+        if(this.fb.getOutputData()!= null){
+            for(int i = 0; i < this.fb.getOutputData().size(); i++){
+                
+                int length = (int)(this.fb.getOutputData().get(i).getName().length() * 7f);
+                
                 if (length > maximum){
                     maximum = length;
                 }
