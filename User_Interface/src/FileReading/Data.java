@@ -5,11 +5,14 @@
  */
 package FileReading;
 
+import UIdisplay.Coordinate;
+
 public class Data {
     private String comment;
     private String initialValue;
     private String name;
     private String type;
+    private Coordinate coordinate;
 
     public Data(String comment, String initialValue, String name, String type) {
         this.comment = comment;
@@ -34,6 +37,15 @@ public class Data {
     public String getType() {
         return type;
     }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coordinate) {
+        this.coordinate = coordinate;
+    }
+    
     
     
     

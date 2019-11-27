@@ -17,8 +17,6 @@ public class ConnectionInfo {
         this.Source = Source;
     }
     
-    
-
     public void setDx1(double dx1) {
         this.dx1 = dx1;
     }
@@ -39,8 +37,5 @@ public class ConnectionInfo {
     public String getSource() {
         return Source;
     }
-
-    
-    
     
 }
