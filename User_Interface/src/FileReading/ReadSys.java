@@ -14,23 +14,11 @@ import org.dom4j.io.SAXReader;
 
 public class ReadSys {
     
-//    public static void main(String[] args){
-//        // this class is design to read .sys file, it will later intergrate with the function block read.
-//        
-//        try{
-//            ReadSys rd = new ReadSys();
-//            rd.SysRead();
-//            
-//        }catch(DocumentException e){
-//            System.err.println(e);
-//        }
-//        
-//    }
     
-    public SystemInfo SysRead() throws DocumentException{
+    public SystemInfo SysRead(String filePath) throws DocumentException{
         
         SAXReader reader = new SAXReader();
-        Document doc = reader.read("./src/FileReading/testSYS.xml");
+        Document doc = reader.read(filePath);
         
         Element rootElement = doc.getRootElement();
         
@@ -53,14 +41,23 @@ public class ReadSys {
         Element subNetwork = applicationElements.element("SubAppNetwork");
         ArrayList<functionBlock> functionBlockInformation = subNetworkProcess(subNetwork);
         
+        
+        //read devices information
+        Element devicesElement = rootElement.element("Device");
+        
+        Element resourcesElement = devicesElement.element("Resource");
+        
+        Element FBnetworkElement = resourcesElement.element("FBNetwork");
+                
+        
         //get eventConnections
-        Element elementConnection = subNetwork.element("EventConnections");
-        ArrayList<ConnectionInfo> eventConns = geatherConnectionInformation(elementConnection);
+        Element elementConnection = FBnetworkElement.element("EventConnections");
+        ArrayList<ConnectionInfo> eventConns = gatherConnectionInformation(elementConnection, ConnType.EVENT);
         
         
         //get DataConnections
-        Element dataConnection = subNetwork.element("DataConnections");
-        ArrayList<ConnectionInfo> dataConns = geatherConnectionInformation(dataConnection);
+        Element dataConnection = FBnetworkElement.element("DataConnections");
+        ArrayList<ConnectionInfo> dataConns = gatherConnectionInformation(dataConnection, ConnType.DATA);
         
         SystemInfo info = new SystemInfo(documentName, documentComment, versionAuthor, organization, versionVersion,
                 applicationName, applicationComment, functionBlockInformation, eventConns, dataConns);
@@ -68,9 +65,11 @@ public class ReadSys {
         return info;
     }
     
-    private ArrayList<ConnectionInfo> geatherConnectionInformation(Element connectionEle){
+    private ArrayList<ConnectionInfo> gatherConnectionInformation(Element connectionEle, ConnType type){
         Iterator<Element> connectionElement = connectionEle.elements("Connection").iterator();
         ArrayList<ConnectionInfo> conn = new ArrayList<ConnectionInfo>();
+        
+        System.out.println(connectionElement);
         
         while(connectionElement.hasNext()){
             Element connEle = connectionElement.next();
@@ -79,16 +78,33 @@ public class ReadSys {
             String destination =connEle.attributeValue("Destination");
             String source = connEle.attributeValue("Source");
             
-            ConnectionInfo info = new ConnectionInfo(comment, destination, source);
+            ConnectionInfo info = new ConnectionInfo(comment, destination, source, type);
             
-            try{
-                double dx1 = Double.parseDouble(connEle.attributeValue("dx1"));
-                info.setDx1(dx1);
+            // get information for all dx.
+            int dxCounter = 1;
+            ArrayList<Double> dxArray = new ArrayList<Double>();
+
+            // if dxcounter is greater than 1, it will continue processing, otherwise it will stop(means there's the end of the file)
+            while(dxCounter != 0){
+                String dxValue = connEle.attributeValue("dx" + dxCounter);
                 
-            }catch (NullPointerException e){
-                // this is means there is no such data called dx1, therefore it will ignore it.
+                if(dxValue != null){
+                    dxArray.add(Double.parseDouble(dxValue));
+                                        
+                    dxCounter ++;
+                } else {
+                    // if there was no more data, then suspend the while loop.
+                    dxCounter = 0;
+                }
             }
             
+            // space for get dy
+            ArrayList<Double> dyArray = new ArrayList<Double>();
+
+            
+            info.setDxArray(dxArray);
+            info.setDyArray(dyArray);
+  
             conn.add(info);
         }
         

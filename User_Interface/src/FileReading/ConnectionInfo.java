@@ -5,37 +5,61 @@
  */
 package FileReading;
 
+import java.util.ArrayList;
+
+
 public class ConnectionInfo {
     private String comment;
-    private String Destination;
-    private String Source;
-    private double dx1;
+    private String destination;
+    private String source;
+    private ArrayList<Double> dxArray;
+    private ArrayList<Double> dyArray;
+    private ConnType type;
 
-    public ConnectionInfo(String comment, String Destination, String Source) {
+    public ConnectionInfo(String comment, String Destination, String Source, ConnType type) {
         this.comment = comment;
-        this.Destination = Destination;
-        this.Source = Source;
+        this.destination = Destination;
+        this.source = Source;
+        this.type = type;
     }
-    
-    public void setDx1(double dx1) {
-        this.dx1 = dx1;
-    }
-    
-    public double getDx1(){
-        return this.dx1;
-    }
-    
 
+    public ArrayList<Double> getDxArray() {
+        return dxArray;
+    }
+
+    public void setDxArray(ArrayList<Double> dxArray) {
+        this.dxArray = dxArray;
+    }
+
+    public ArrayList<Double> getDyArray() {
+        return dyArray;
+    }
+
+    public void setDyArray(ArrayList<Double> dyArray) {
+        this.dyArray = dyArray;
+    }
+
+    
+   
     public String getComment() {
         return comment;
     }
 
     public String getDestination() {
-        return Destination;
+        return destination;
     }
 
     public String getSource() {
-        return Source;
+        return source;
     }
+
+    public ConnType getType() {
+        return type;
+    }
+
+    public void setType(ConnType type) {
+        this.type = type;
+    }
+    
     
 }

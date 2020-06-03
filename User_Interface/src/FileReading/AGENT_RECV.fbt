@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE FBType SYSTEM "http://www.holobloc.com/xml/LibraryElement.dtd">
+<FBType Comment="Composite Function Block Type" Name="AGENT_RECV">
+  <Identification Standard="61499-2"/>
+  <VersionInfo Author="badger" Date="2019-11-11" Version="1.0"/>
+  <InterfaceList>
+    <EventInputs>
+      <Event Comment="Initialization Request" Name="INIT" Type="Event"/>
+    </EventInputs>
+    <EventOutputs>
+      <Event Comment="" Name="REQO" Type="Event"/>
+    </EventOutputs>
+    <InputVars>
+      <VarDeclaration Comment="" Name="ADDRESS" Type="STRING"/>
+      <VarDeclaration Comment="" Name="PORT" Type="LINT"/>
+      <VarDeclaration Comment="" Name="DATA_TYPE" Type="INT"/>
+    </InputVars>
+    <OutputVars>
+      <VarDeclaration Comment="" Name="DATA_INT" Type="INT"/>
+      <VarDeclaration Comment="" Name="DATA_LINT" Type="LINT"/>
+      <VarDeclaration Comment="" Name="DATA_REAL" Type="REAL"/>
+      <VarDeclaration Comment="" Name="DATA_LREAL" Type="LREAL"/>
+      <VarDeclaration Comment="" Name="DATA_STRING" Type="STRING"/>
+      <VarDeclaration Comment="" Name="DATA_WSTRING" Type="WSTRING"/>
+      <VarDeclaration Comment="" Name="DATA_BOOL" Type="BOOL"/>
+    </OutputVars>
+  </InterfaceList>
+  <FBNetwork>
+    <FB Comment="" Name="E_CYCLE" Type="E_CYCLE" x="1647.0588235294117" y="470.5882352941176">
+      <Parameter Name="DT" Value="T#100ms"/>
+    </FB>
+    <FB Comment="" Name="AGENT_SERVER" Type="AGENT_SERVER" x="2705.882352941176" y="1058.8235294117646"/>
+    <EventConnections>
+      <Connection Comment="" Destination="E_CYCLE.START" Source="INIT" dx1="994.1176470588234"/>
+      <Connection Comment="" Destination="AGENT_SERVER.INIT" Source="INIT" dx1="2135.2941176470586"/>
+      <Connection Comment="" Destination="AGENT_SERVER.REQ" Source="E_CYCLE.EO" dx1="129.41176470588235"/>
+      <Connection Comment="" Destination="REQO" Source="AGENT_SERVER.REQO" dx1="164.70588235294116"/>
+    </EventConnections>
+    <DataConnections>
+      <Connection Comment="" Destination="AGENT_SERVER.ADDRESS" Source="ADDRESS" dx1="652.9411764705882"/>
+      <Connection Comment="" Destination="AGENT_SERVER.PORT" Source="PORT" dx1="499.99999999999994"/>
+      <Connection Comment="" Destination="AGENT_SERVER.DATA_TYPE" Source="DATA_TYPE" dx1="323.52941176470586"/>
+      <Connection Comment="" Destination="DATA_INT" Source="AGENT_SERVER.DATA_INT" dx1="347.05882352941177"/>
+      <Connection Comment="" Destination="DATA_LINT" Source="AGENT_SERVER.DATA_LINT" dx1="505.8823529411764"/>
+      <Connection Comment="" Destination="DATA_REAL" Source="AGENT_SERVER.DATA_REAL" dx1="641.1764705882352"/>
+      <Connection Comment="" Destination="DATA_LREAL" Source="AGENT_SERVER.DATA_LREAL" dx1="788.235294117647"/>
+      <Connection Comment="" Destination="DATA_STRING" Source="AGENT_SERVER.DATA_STRING" dx1="894.1176470588234"/>
+      <Connection Comment="" Destination="DATA_WSTRING" Source="AGENT_SERVER.DATA_WSTRING" dx1="988.235294117647"/>
+      <Connection Comment="" Destination="DATA_BOOL" Source="AGENT_SERVER.DATA_BOOL" dx1="1117.6470588235293"/>
+    </DataConnections>
+  </FBNetwork>
+</FBType>

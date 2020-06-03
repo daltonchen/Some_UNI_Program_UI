@@ -45,6 +45,10 @@ public class Data {
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
+
+    public void setInitialValue(String initialValue) {
+        this.initialValue = initialValue;
+    }
     
     
     

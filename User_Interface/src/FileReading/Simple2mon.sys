@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE System SYSTEM "http://www.holobloc.com/xml/LibraryElement.dtd">
+<System Comment="" Name="Simple2mon">
+  <VersionInfo Author="badger" Date="2019-11-01" Version="1.0"/>
+  <Application Comment="" Name="Simple2monApp">
+    <SubAppNetwork>
+      <FB Comment="" Name="E_CYCLE_01" Type="E_CYCLE" x="2588.235294117647" y="470.5882352941176">
+        <Parameter Name="DT" Value="T#1s"/>
+      </FB>
+      <FB Comment="" Name="T_SENSOR_01" Type="T_SENSOR" x="3647.0588235294117" y="470.5882352941176">
+        <Parameter Name="HI" Value="100"/>
+        <Parameter Name="LO" Value="20"/>
+      </FB>
+      <FB Comment="" Name="AGENT_SERVER" Type="AGENT_SERVER" x="3058.8235294117644" y="1411.764705882353">
+        <Parameter Name="ADDRESS" Value="127.0.0.1"/>
+        <Parameter Name="PORT" Value="62501"/>
+        <Parameter Name="DATA_TYPE" Value="2"/>
+      </FB>
+      <FB Comment="" Name="E_CYCLE" Type="E_CYCLE" x="2117.6470588235293" y="1411.764705882353">
+        <Parameter Name="DT" Value="T#100ms"/>
+      </FB>
+      <FB Comment="" Name="AGENT_SEND_2" Type="AGENT_SEND" x="6588.235294117647" y="470.5882352941176">
+        <Parameter Name="ADDRESS" Value="127.0.0.2"/>
+        <Parameter Name="PORT" Value="62500"/>
+        <Parameter Name="INST_ID" Value="2"/>
+        <Parameter Name="DATA_TYPE" Value="2"/>
+      </FB>
+      <FB Comment="" Name="F_TO_C_CONV" Type="F_TO_C_CONV" x="5052.941176470588" y="470.5882352941176">
+        <Parameter Name="IN" Value="0.00"/>
+      </FB>
+      <FB Comment="" Name="AGENT_SEND_1" Type="AGENT_SEND" x="5052.941176470588" y="1176.4705882352941">
+        <Parameter Name="ADDRESS" Value="127.0.0.2"/>
+        <Parameter Name="PORT" Value="62500"/>
+        <Parameter Name="INST_ID" Value="1"/>
+        <Parameter Name="DATA_TYPE" Value="2"/>
+      </FB>
+      <EventConnections>
+        <Connection Comment="" Destination="T_SENSOR_01.REQ" Source="E_CYCLE_01.EO" dx1="294.11764705882354"/>
+        <Connection Comment="" Destination="AGENT_SEND_2.REQ" Source="F_TO_C_CONV.CNF"/>
+        <Connection Comment="" Destination="AGENT_SERVER.REQ" Source="E_CYCLE.EO" dx1="117.6470588235294"/>
+        <Connection Comment="" Destination="F_TO_C_CONV.REQ" Source="AGENT_SERVER.REQO" dx1="294.11764705882354"/>
+      </EventConnections>
+      <DataConnections>
+        <Connection Comment="" Destination="AGENT_SEND_2.DATA_REAL" Source="F_TO_C_CONV.OUT" dx1="276.4705882352941"/>
+        <Connection Comment="" Destination="F_TO_C_CONV.IN" Source="AGENT_SERVER.DATA_REAL" dx1="447.0588235294117"/>
+      </DataConnections>
+    </SubAppNetwork>
+  </Application>
+  <Device Comment="" Name="FORTE_PC" Type="FORTE_PC" x="3211.7647058823527" y="1788.2352941176468">
+    <Parameter Name="MGR_ID" Value="&quot;localhost:61499&quot;"/>
+    <Attribute Comment="device profile" Name="Profile" Type="STRING" Value="HOLOBLOC"/>
+    <Attribute Comment="color" Name="Color" Type="STRING" Value="195,175,75"/>
+    <Resource Comment="" Name="EMB_RES" Type="EMB_RES" x="0.0" y="0.0">
+      <FBNetwork>
+        <FB Comment="" Name="E_CYCLE_01" Type="E_CYCLE" x="2588.235294117647" y="470.5882352941176">
+          <Parameter Name="DT" Value="T#1s"/>
+        </FB>
+        <FB Comment="" Name="E_CYCLE" Type="E_CYCLE" x="2352.9411764705883" y="1529.4117647058822">
+          <Parameter Name="DT" Value="T#100ms"/>
+        </FB>
+        <FB Comment="" Name="AGENT_SERVER" Type="AGENT_SERVER" x="3058.8235294117644" y="1764.705882352941">
+          <Parameter Name="ADDRESS" Value="127.0.0.1"/>
+          <Parameter Name="PORT" Value="62501"/>
+          <Parameter Name="DATA_TYPE" Value="2"/>
+        </FB>
+        <FB Comment="" Name="F_TO_C_CONV" Type="F_TO_C_CONV" x="5052.941176470588" y="470.5882352941176">
+          <Parameter Name="IN" Value="0.00"/>
+        </FB>
+        <FB Comment="" Name="AGENT_SEND_1" Type="AGENT_SEND" x="5052.941176470588" y="1176.4705882352941">
+          <Parameter Name="ADDRESS" Value="127.0.0.2"/>
+          <Parameter Name="PORT" Value="62500"/>
+          <Parameter Name="INST_ID" Value="1"/>
+          <Parameter Name="DATA_TYPE" Value="2"/>
+        </FB>
+        <FB Comment="" Name="AGENT_SEND_2" Type="AGENT_SEND" x="6588.235294117647" y="470.5882352941176">
+          <Parameter Name="ADDRESS" Value="127.0.0.2"/>
+          <Parameter Name="PORT" Value="62500"/>
+          <Parameter Name="INST_ID" Value="2"/>
+          <Parameter Name="DATA_TYPE" Value="2"/>
+        </FB>
+        <FB Comment="" Name="T_SENSOR_01" Type="T_SENSOR" x="3647.0588235294117" y="470.5882352941176">
+          <Parameter Name="HI" Value="100"/>
+          <Parameter Name="LO" Value="20"/>
+        </FB>
+        <EventConnections>
+          <Connection Comment="" Destination="AGENT_SEND_2.REQ" Source="F_TO_C_CONV.CNF"/>
+          <Connection Comment="" Destination="T_SENSOR_01.REQ" Source="E_CYCLE_01.EO" dx1="294.11764705882354"/>
+          <Connection Comment="" Destination="E_CYCLE_01.START" Source="START.COLD" dx1="782.3529411764705"/>
+          <Connection Comment="" Destination="E_CYCLE_01.START" Source="START.WARM" dx1="541.1764705882352"/>
+          <Connection Comment="" Destination="E_CYCLE_01.STOP" Source="START.STOP" dx1="423.52941176470586"/>
+          <Connection Comment="" Destination="AGENT_SERVER.REQ" Source="E_CYCLE.EO" dx1="117.6470588235294"/>
+          <Connection Comment="" Destination="F_TO_C_CONV.REQ" Source="AGENT_SERVER.REQO" dx1="217.6470588235294"/>
+          <Connection Comment="" Destination="E_CYCLE.START" Source="START.COLD" dx1="847.0588235294117"/>
+          <Connection Comment="" Destination="E_CYCLE.START" Source="START.WARM" dx1="270.5882352941176"/>
+          <Connection Comment="" Destination="E_CYCLE.STOP" Source="START.STOP" dx1="105.88235294117646"/>
+        </EventConnections>
+        <DataConnections>
+          <Connection Comment="" Destination="AGENT_SEND_2.DATA_REAL" Source="F_TO_C_CONV.OUT" dx1="347.05882352941177"/>
+          <Connection Comment="" Destination="F_TO_C_CONV.IN" Source="AGENT_SERVER.DATA_REAL" dx1="447.0588235294117"/>
+        </DataConnections>
+      </FBNetwork>
+    </Resource>
+  </Device>
+  <Mapping From="Simple2monApp.E_CYCLE_01" To="FORTE_PC.EMB_RES.E_CYCLE_01"/>
+  <Mapping From="Simple2monApp.E_CYCLE" To="FORTE_PC.EMB_RES.E_CYCLE"/>
+  <Mapping From="Simple2monApp.AGENT_SERVER" To="FORTE_PC.EMB_RES.AGENT_SERVER"/>
+  <Mapping From="Simple2monApp.F_TO_C_CONV" To="FORTE_PC.EMB_RES.F_TO_C_CONV"/>
+  <Mapping From="Simple2monApp.AGENT_SEND_1" To="FORTE_PC.EMB_RES.AGENT_SEND_1"/>
+  <Mapping From="Simple2monApp.AGENT_SEND_2" To="FORTE_PC.EMB_RES.AGENT_SEND_2"/>
+  <Mapping From="Simple2monApp.T_SENSOR_01" To="FORTE_PC.EMB_RES.T_SENSOR_01"/>
+  <Segment Comment="" Name="Ethernet" Type="Ethernet" dx1="1764.705882352941" x="4776.470588235294" y="1470.5882352941176">
+    <Attribute Comment="color" Name="Color" Type="STRING" Value="151,57,231"/>
+  </Segment>
+  <Link CommResource="FORTE_PC" Comment="" SegmentName="Ethernet"/>
+</System>

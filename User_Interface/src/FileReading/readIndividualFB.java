@@ -18,13 +18,11 @@ import org.dom4j.io.SAXReader;
 public class readIndividualFB {
     
     
-    public readIndividualFB(String fileName, functionBlock fb){
+    public readIndividualFB(String filePath, functionBlock fb){
         try{
             
-            //test
-            functionBlock fbWithNodes = readXML(fileName, fb);
+            functionBlock fbWithNodes = readXML(filePath, fb);
             
-            System.out.println(fbWithNodes.getInnerComment());
             
         } catch (DocumentException e){
             System.err.println(e);
@@ -34,9 +32,9 @@ public class readIndividualFB {
     /*
     This class is reading the xml from the local file and return the finished product
     */
-    public functionBlock readXML(String fileName, functionBlock fb) throws DocumentException{
+    public functionBlock readXML(String filePath, functionBlock fb) throws DocumentException{
         SAXReader reader = new SAXReader();
-        Document doc = reader.read("./src/FileReading/" + fileName);
+        Document doc = reader.read(filePath);
         
         
         Element rootElement = doc.getRootElement();
@@ -83,57 +81,70 @@ public class readIndividualFB {
         ArrayList<Data> dataOutput = getData(varOutputElement);
         fb.setOutputData(dataOutput);
         
+        // this will turn the flag of the function block to be true
+        // this step will be checked each time when the function block is being
+        // used, inorder to protect the program from crash.
+        fb.setCompleteness(true);
+        // fill initial value(from system file level) into function block
+        fb.fetchValueIntoField();
         return fb;
         // simpleFB is not being read, it will need further discussion on it.
         
     }
     
     public ArrayList<Data> getData(Element dataInputElement){
-        
-        Iterator<Element> dataIterator = dataInputElement.elements("VarDeclaration").iterator();
         ArrayList<Data> Datas = new ArrayList<Data>();
+
+        if(dataInputElement != null){
+            Iterator<Element> dataIterator = dataInputElement.elements("VarDeclaration").iterator();
         
-        while(dataIterator.hasNext()){
-            Element dataElement = dataIterator.next();
-            
-            String comment = dataElement.attributeValue("Comment");
-            String initialValue = dataElement.attributeValue("InitialValue");
-            String name = dataElement.attributeValue("Name");
-            String type = dataElement.attributeValue("Type");
-            
-            Datas.add(new Data(comment, initialValue, name, type));
-            
+            while(dataIterator.hasNext()){
+                Element dataElement = dataIterator.next();
+
+                String comment = dataElement.attributeValue("Comment");
+                String initialValue = dataElement.attributeValue("InitialValue");
+                String name = dataElement.attributeValue("Name");
+                String type = dataElement.attributeValue("Type");
+
+                Datas.add(new Data(comment, initialValue, name, type));
+
+            }
         }
         
         return Datas;
     }
     
     public ArrayList<Event> getEvent(Element eventInputElement){
-        
-        Iterator<Element> eventIterator = eventInputElement.elements("Event").iterator();
+
         ArrayList<Event> Events = new ArrayList<Event>();
-        while(eventIterator.hasNext()){
-            Element eventElement = eventIterator.next();
-            
-            String EventComment = eventElement.attributeValue("Comment");
-            String EventName = eventElement.attributeValue("Name");
-            String EventType = eventElement.attributeValue("Type");
-            
-            
-            // get node with information
-            ArrayList<NodeWith> withList = new ArrayList<NodeWith>();
-            Iterator<Element> withIterator = eventElement.elements("With").iterator();
-            
-            while(withIterator.hasNext()){
-                Element withElement = withIterator.next();
-                String withInfo = withElement.attributeValue("Var");
-                withList.add(new NodeWith(withInfo));
+
+        if(eventInputElement != null){
+            Iterator<Element> eventIterator = eventInputElement.elements("Event").iterator();
+            while(eventIterator.hasNext()){
+                Element eventElement = eventIterator.next();
+
+                String EventComment = eventElement.attributeValue("Comment");
+                String EventName = eventElement.attributeValue("Name");
+                String EventType = eventElement.attributeValue("Type");
+
+
+                // get node with information
+                ArrayList<NodeWith> withList = new ArrayList<NodeWith>();
+                Iterator<Element> withIterator = eventElement.elements("With").iterator();
+
+                while(withIterator.hasNext()){
+                    Element withElement = withIterator.next();
+                    String withInfo = withElement.attributeValue("Var");
+                    withList.add(new NodeWith(withInfo));
+                }
+
+                Events.add(new Event(EventComment, EventName, EventType, withList));
             }
-            
-            Events.add(new Event(EventComment, EventName, EventType, withList));
-        }
         
+        }
+
         return Events;
+
     }
     
 }

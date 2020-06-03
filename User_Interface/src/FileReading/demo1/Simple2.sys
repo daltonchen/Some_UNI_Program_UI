@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE System SYSTEM "http://www.holobloc.com/xml/LibraryElement.dtd">
+<System Comment="" Name="Simple2">
+  <VersionInfo Author="badger" Date="2019-10-21" Version="1.0"/>
+  <Application Comment="" Name="Simple2App">
+    <SubAppNetwork>
+      <FB Comment="" Name="E_CYCLE" Type="E_CYCLE" x="2117.6470588235293" y="1176.4705882352941">
+        <Parameter Name="DT" Value="T#1s"/>
+      </FB>
+      <FB Comment="" Name="T_SENSOR_01" Type="T_SENSOR" x="3176.4705882352937" y="1176.4705882352941">
+        <Parameter Name="HI" Value="100"/>
+        <Parameter Name="LO" Value="20"/>
+      </FB>
+      <FB Comment="" Name="F_TO_C_CONV" Type="F_TO_C_CONV" x="4470.588235294117" y="1294.1176470588234"/>
+      <EventConnections>
+        <Connection Comment="" Destination="T_SENSOR_01.REQ" Source="E_CYCLE.EO" dx1="294.11764705882354"/>
+        <Connection Comment="" Destination="F_TO_C_CONV.REQ" Source="T_SENSOR_01.REQO" dx1="376.4705882352941"/>
+      </EventConnections>
+      <DataConnections>
+        <Connection Comment="" Destination="F_TO_C_CONV.IN" Source="T_SENSOR_01.TEMP" dx1="376.4705882352941"/>
+      </DataConnections>
+    </SubAppNetwork>
+  </Application>
+  <Device Comment="" Name="FORTE_PC" Type="FORTE_PC" x="3076.4705882352937" y="1370.5882352941176">
+    <Parameter Name="MGR_ID" Value="&quot;localhost:61499&quot;"/>
+    <Attribute Comment="device profile" Name="Profile" Type="STRING" Value="HOLOBLOC"/>
+    <Attribute Comment="color" Name="Color" Type="STRING" Value="226,94,68"/>
+    <Resource Comment="" Name="EMB_RES" Type="EMB_RES" x="0.0" y="0.0">
+      <FBNetwork>
+        <FB Comment="" Name="E_CYCLE" Type="E_CYCLE" x="2117.6470588235293" y="1176.4705882352941">
+          <Parameter Name="DT" Value="T#1s"/>
+        </FB>
+        <FB Comment="" Name="T_SENSOR_01" Type="T_SENSOR" x="3176.4705882352937" y="1176.4705882352941">
+          <Parameter Name="HI" Value="100"/>
+          <Parameter Name="LO" Value="20"/>
+        </FB>
+        <FB Comment="" Name="F_TO_C_CONV" Type="F_TO_C_CONV" x="4435.294117647059" y="1511.764705882353"/>
+        <EventConnections>
+          <Connection Comment="" Destination="T_SENSOR_01.REQ" Source="E_CYCLE.EO" dx1="294.11764705882354"/>
+          <Connection Comment="" Destination="E_CYCLE.START" Source="START.COLD" dx1="729.4117647058823"/>
+          <Connection Comment="" Destination="E_CYCLE.START" Source="START.WARM" dx1="364.70588235294116"/>
+          <Connection Comment="" Destination="E_CYCLE.STOP" Source="START.STOP" dx1="364.70588235294116"/>
+          <Connection Comment="" Destination="F_TO_C_CONV.REQ" Source="T_SENSOR_01.REQO" dx1="358.8235294117647"/>
+        </EventConnections>
+        <DataConnections>
+          <Connection Comment="" Destination="F_TO_C_CONV.IN" Source="T_SENSOR_01.TEMP" dx1="358.8235294117647"/>
+        </DataConnections>
+      </FBNetwork>
+    </Resource>
+  </Device>
+  <Mapping From="Simple2App.E_CYCLE" To="FORTE_PC.EMB_RES.E_CYCLE"/>
+  <Mapping From="Simple2App.T_SENSOR_01" To="FORTE_PC.EMB_RES.T_SENSOR_01"/>
+  <Mapping From="Simple2App.F_TO_C_CONV" To="FORTE_PC.EMB_RES.F_TO_C_CONV"/>
+  <Segment Comment="" Name="Ethernet" Type="Ethernet" dx1="1764.705882352941" x="4652.941176470588" y="1076.4705882352941">
+    <Attribute Comment="color" Name="Color" Type="STRING" Value="123,135,215"/>
+  </Segment>
+  <Link CommResource="FORTE_PC" Comment="" SegmentName="Ethernet"/>
+</System>
