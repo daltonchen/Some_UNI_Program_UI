@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE FBType SYSTEM "http://www.holobloc.com/xml/LibraryElement.dtd">
+<FBType Comment="Temperature sensor" Name="T_SENSOR">
+  <Identification Standard="61499-2"/>
+  <VersionInfo Author="badger" Date="2018-12-07" Organization="AUT SERL EMSOFT" Remarks="Original version" Version="1.0"/>
+  <CompilerInfo header="#include &quot;diags.h&quot;"/>
+  <InterfaceList>
+    <EventInputs>
+      <Event Comment="Initialization Request" Name="INIT" Type="Event">
+        <With Var="HI"/>
+        <With Var="LO"/>
+      </Event>
+      <Event Comment="Normal Execution Request" Name="REQ" Type="Event">
+        <With Var="HI"/>
+        <With Var="LO"/>
+      </Event>
+    </EventInputs>
+    <EventOutputs>
+      <Event Comment="Initialization Confirm" Name="INITO" Type="Event"/>
+      <Event Comment="Signals that a new temperature reading is available." Name="REQO" Type="Event">
+        <With Var="TEMP"/>
+      </Event>
+    </EventOutputs>
+    <InputVars>
+      <VarDeclaration Comment="Maximum (highest) temperature the system will detect" InitialValue="100" Name="HI" Type="REAL"/>
+      <VarDeclaration Comment="Minimum lowest temperature the system will detect" InitialValue="20" Name="LO" Type="REAL"/>
+    </InputVars>
+    <OutputVars>
+      <VarDeclaration Comment="Current probe temperature in F" Name="TEMP" Type="REAL"/>
+    </OutputVars>
+  </InterfaceList>
+  <BasicFB>
+    <InternalVars>
+      <VarDeclaration Comment="Specifies if the temperature is rising or falling." InitialValue="1" Name="temperatureDirection" Type="INT"/>
+    </InternalVars>
+    <ECC>
+      <ECState Comment="Initial State" Name="START" x="475.0" y="1125.0"/>
+      <ECState Comment="Initialization" Name="Init" x="1300.0" y="700.0">
+        <ECAction Algorithm="initialize" Output="INITO"/>
+      </ECState>
+      <ECState Comment="Normal execution" Name="SAMPLE" x="2850.0" y="1140.0">
+        <ECAction Algorithm="sample" Output="REQO"/>
+      </ECState>
+      <ECState Comment="" Name="Initialized" x="1900.0" y="1140.0"/>
+      <ECTransition Comment="" Condition="1" Destination="Init" Source="START" x="840.0" y="920.0"/>
+      <ECTransition Comment="" Condition="REQ" Destination="SAMPLE" Source="Initialized" x="2615.0" y="1000.0"/>
+      <ECTransition Comment="" Condition="1" Destination="Initialized" Source="SAMPLE" x="2575.0" y="1430.0"/>
+      <ECTransition Comment="" Condition="1" Destination="Initialized" Source="Init" x="1755.0" y="950.0"/>
+    </ECC>
+    <Algorithm Comment="Initialization algorithm" Name="initialize">
+      <Other Language="AnyText" Text="std::cout &lt;&lt; &quot;initialize\n&quot;;&#10;&#10;srand(  (unsigned int)   time(NULL)   );&#10;&#10;temperatureDirection() = 1;&#10;srand(  (unsigned int)   TForteInt8(time(NULL))   );&#10;&#10;if  (HI() &gt; 0) {&#10;&#9;TEMP() = HI() / 2;&#10;} else {&#10;    if  (LO() &gt; 0) {&#10;&#9;&#9;&#9;TEMP() = LO();&#10;&#9; } else { &#10;        &#9;TEMP() = 0;          &#10; &#9;}&#10;}&#10;"/>
+    </Algorithm>
+    <Algorithm Comment="Sample the probe" Name="sample">
+      <Other Language="AnyText" Text="float tempDifference = 0;&#10;&#10;std::cout &lt;&lt; &quot;sample\n&quot;;&#10;&#10;tempDifference = (static_cast&lt;TForteFloat&gt;(rand())/static_cast&lt;TForteFloat&gt;(RAND_MAX) ) * 10;  &#10;std::cout &lt;&lt; &quot;temperature difference =&quot; &lt;&lt; std::to_string(tempDifference) &lt;&lt; &quot;\n&quot;;&#10;&#10;tempDifference = tempDifference * temperatureDirection();&#10;temperatureDirection() =  - temperatureDirection();&#10;&#10;TEMP() = TEMP() + tempDifference;&#10;if (TEMP() &gt; HI() ) {&#10;&#9;TEMP() = HI() - tempDifference;&#10;    temperatureDirection() = -1;&#10;} else if (TEMP() &lt; LO() ) {&#10;&#9;TEMP() = LO();&#10;    temperatureDirection() = 1;&#10;}&#10;"/>
+    </Algorithm>
+  </BasicFB>
+</FBType>

@@ -22,7 +22,6 @@ public class FunctionBlockCoordinates {
 
     // new port! fix them~
     private functionBlock fb;
-    private Coordinate size;
     private Coordinate[] fbcoordinates;
 //    private int fbNameLength;
 
@@ -60,7 +59,8 @@ public class FunctionBlockCoordinates {
         }
         
         // get the size for the function block it will be the coordinate 0 with the largest point of this function block
-        this.size = fbcoordinates[6];
+        this.fb.setWidth(fbcoordinates[6].coordinateX);
+        this.fb.setHeight(fbcoordinates[6].coordinateY);
 
     }
     
@@ -80,7 +80,7 @@ public class FunctionBlockCoordinates {
         
         if(this.fb.getOutputEvent() != null){
             //Event output
-            for(int i = 0; i < this.fb.getInputEvent().size(); i++){
+            for(int i = 0; i < this.fb.getOutputEvent().size(); i++){
 
                 Coordinate coor = new Coordinate(this.getXCoorArray()[1] - 13, 10 + 15 * i);
 
@@ -174,8 +174,10 @@ public class FunctionBlockCoordinates {
                 
                 int length = (int)(this.fb.getInputEvent().get(i).getName().length() * 7f);
                 
-                if(this.fb.getOutputEvent().get(i) != null){
-                    length += (int)(this.fb.getOutputEvent().get(i).getName().length() * 7f);
+                if(this.fb.getOutputEvent() != null){
+                    if(this.fb.getOutputEvent().size() > i){
+                        length += (int)(this.fb.getOutputEvent().get(i).getName().length() * 7f);
+                    }
                 }
                 
                 if (length > maximum){
@@ -203,7 +205,9 @@ public class FunctionBlockCoordinates {
                 int length = (int)(this.fb.getInputData().get(i).getName().length() * 7f);
                 
                 if(this.fb.getOutputData() != null){
-                    length += (int)(this.fb.getOutputData().get(i).getName().length() * 7f);
+                    if(this.fb.getOutputData().size() > i){
+                        length += (int)(this.fb.getOutputData().get(i).getName().length() * 7f);
+                    }
                 }
                 
                 if(length > maximum){
@@ -239,7 +243,7 @@ public class FunctionBlockCoordinates {
         switch (number) {
             case 1:
                 // case 1 means location 2, this number should be same as location 8
-                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX + 60 + drawingWidth;
+                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX + 40 + drawingWidth;
                 break;
             case 2:
                 // case 2 means location 3
@@ -267,7 +271,7 @@ public class FunctionBlockCoordinates {
                 break;
             case 7:
                 //case 7 means location 8, this number should be same as location 2
-                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX - 60 - drawingWidth;
+                fbcoordinates[number].coordinateX = fbcoordinates[number - 1].coordinateX - 40 - drawingWidth;
                 break;
             case 8:
                 // case 8 means location 9
@@ -287,10 +291,7 @@ public class FunctionBlockCoordinates {
 
         return coor;
     }
-    
-    public Coordinate getSize(){
-        return this.size;
-    }
+
 
     public int[] getXCoorArray() {
 

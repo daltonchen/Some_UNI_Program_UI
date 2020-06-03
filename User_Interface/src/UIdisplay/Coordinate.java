@@ -9,6 +9,7 @@ public class Coordinate {
 		this.coordinateY = valueY;
 	}
 	
+        @Override
 	public String toString() {
 		return "The coorinate for X will be: " + this.coordinateX + " ,Coordinate for Y will be: " + this.coordinateY; 
 	}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE FBType SYSTEM "http://www.holobloc.com/xml/LibraryElement.dtd">
+<FBType Comment="Service Interface Function Block Type" Name="AGENT_SERVER">
+  <Identification Description="This Service Interface Function Block listens for in-coming connection requests from the remote diagnostic agent. Each packet received carries a data value that is to be output to the function block that is being tested." Standard="61499-2"/>
+  <VersionInfo Author="badger" Date="2019-01-10" Version="1.0"/>
+  <InterfaceList>
+    <EventInputs>
+      <Event Comment="Service Initialization" Name="INIT" Type="Event">
+        <With Var="ADDRESS"/>
+        <With Var="PORT"/>
+        <With Var="DATA_TYPE"/>
+      </Event>
+      <Event Comment="Service Request" Name="REQ" Type="Event"/>
+    </EventInputs>
+    <EventOutputs>
+      <Event Comment="Used to trigger the initialisation of other diagnostic AGENT_SEND function blocks that are being used to assist with the diagnosis." Name="INITO" Type="Event"/>
+      <Event Comment="Used to alert the function block that is being tested that new data is available on the agreed output." Name="REQO" Type="Event">
+        <With Var="DATA_INT"/>
+        <With Var="DATA_LINT"/>
+        <With Var="DATA_REAL"/>
+        <With Var="DATA_LREAL"/>
+        <With Var="DATA_STRING"/>
+        <With Var="DATA_WSTRING"/>
+        <With Var="DATA_BOOL"/>
+      </Event>
+    </EventOutputs>
+    <InputVars>
+      <VarDeclaration Comment="Address that this agent function block is listening on for incoming connection requests." Name="ADDRESS" Type="STRING"/>
+      <VarDeclaration Comment="Port that this function block is listening on." Name="PORT" Type="LINT"/>
+      <VarDeclaration Comment="Enumerated data type used to determine what type of data should be output from this function block." Name="DATA_TYPE" Type="INT"/>
+    </InputVars>
+    <OutputVars>
+      <VarDeclaration Comment="Integer data type " Name="DATA_INT" Type="INT"/>
+      <VarDeclaration Comment="Long integer data type." Name="DATA_LINT" Type="LINT"/>
+      <VarDeclaration Comment="Real data type" Name="DATA_REAL" Type="REAL"/>
+      <VarDeclaration Comment="Long Real data type" Name="DATA_LREAL" Type="LREAL"/>
+      <VarDeclaration Comment="String data type" Name="DATA_STRING" Type="STRING"/>
+      <VarDeclaration Comment="Wide String data type." Name="DATA_WSTRING" Type="WSTRING"/>
+      <VarDeclaration Comment="Boolean data type." Name="DATA_BOOL" Type="BOOL"/>
+    </OutputVars>
+  </InterfaceList>
+  <Service Comment="Service Interface Function Block Type" LeftInterface="APPLICATION" RightInterface="RESOURCE">
+    <ServiceSequence Comment="" Name="normal_establishment">
+      <ServiceTransaction>
+        <InputPrimitive Event="INIT+" Interface="APPLICATION" Parameters="PARAMS"/>
+        <OutputPrimitive Event="initialize" Interface="RESOURCE" Parameters="PARAMS"/>
+        <OutputPrimitive Event="INITO+" Interface="APPLICATION"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="unsuccessful_establishment">
+      <ServiceTransaction>
+        <InputPrimitive Event="INIT+" Interface="APPLICATION" Parameters="PARAMS"/>
+        <OutputPrimitive Event="initialize" Interface="RESOURCE" Parameters="PARAMS"/>
+        <OutputPrimitive Event="INITO-" Interface="APPLICATION" Parameters="STATUS"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="request_confirm">
+      <ServiceTransaction>
+        <InputPrimitive Event="REQ+" Interface="APPLICATION" Parameters="SD"/>
+        <OutputPrimitive Event="request" Interface="RESOURCE" Parameters="SD"/>
+        <OutputPrimitive Event="CNF+" Interface="APPLICATION" Parameters="RD"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="request_inhibited">
+      <ServiceTransaction>
+        <InputPrimitive Event="REQ-" Interface="APPLICATION" Parameters="SD"/>
+        <OutputPrimitive Event="CNF-" Interface="APPLICATION" Parameters="STATUS"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="request_error">
+      <ServiceTransaction>
+        <InputPrimitive Event="REQ+" Interface="APPLICATION" Parameters="SD"/>
+        <OutputPrimitive Event="request" Interface="RESOURCE" Parameters="SD"/>
+        <OutputPrimitive Event="CNF-" Interface="APPLICATION" Parameters="STATUS"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="indication_response">
+      <ServiceTransaction>
+        <InputPrimitive Event="indicate" Interface="RESOURCE" Parameters="RD"/>
+        <OutputPrimitive Event="IND+" Interface="APPLICATION" Parameters="RD"/>
+      </ServiceTransaction>
+      <ServiceTransaction>
+        <InputPrimitive Event="RSP" Interface="APPLICATION" Parameters="QI,SD"/>
+        <OutputPrimitive Event="response" Interface="RESOURCE" Parameters="QI,SD"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="indication_inhibited">
+      <ServiceTransaction>
+        <InputPrimitive Event="indicate" Interface="RESOURCE" Parameters="RD,QI=FALSE"/>
+        <OutputPrimitive Event="inhibited" Interface="RESOURCE"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="error_indication">
+      <ServiceTransaction>
+        <InputPrimitive Event="error" Interface="RESOURCE" Parameters="STATUS"/>
+        <OutputPrimitive Event="IND-" Interface="APPLICATION" Parameters="STATUS"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="application_initiated_termination">
+      <ServiceTransaction>
+        <InputPrimitive Event="INIT-" Interface="APPLICATION"/>
+        <OutputPrimitive Event="terminate" Interface="RESOURCE"/>
+        <OutputPrimitive Event="INITO-" Interface="APPLICATION" Parameters="STATUS"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+    <ServiceSequence Comment="" Name="resource_initiated_termination">
+      <ServiceTransaction>
+        <OutputPrimitive Event="INITO-" Interface="APPLICATION" Parameters="STATUS"/>
+      </ServiceTransaction>
+    </ServiceSequence>
+  </Service>
+</FBType>

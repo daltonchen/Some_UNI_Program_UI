@@ -13,6 +13,7 @@ public class Event {
     private String Comment;
     private String Name;
     private String Type;
+    private String initialValue;
     
     private Coordinate coordinate;
     
@@ -50,6 +51,14 @@ public class Event {
 
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
+    }
+
+    public String getInitialValue() {
+        return initialValue;
+    }
+
+    public void setInitialValue(String initialValue) {
+        this.initialValue = initialValue;
     }
     
     

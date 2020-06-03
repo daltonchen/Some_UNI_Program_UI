@@ -5,6 +5,8 @@
  */
 package FileReading;
 
+import UIdisplay.CreateLabelPanel;
+import UIdisplay.FunctionBlockCoordinates;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +20,8 @@ public class functionBlock {
     private String type;
     private double locationX;
     private double locationY;
+    private int width;
+    private int height;
     
     private String InnerComment;
     private String standard;
@@ -25,11 +29,16 @@ public class functionBlock {
     private String date;
     private String version;
     
+    private boolean isComplete;
+    
     private ArrayList<FBPara> fbParameters;
     private ArrayList<Event> inputEvent;
     private ArrayList<Event> outputEvent;
     private ArrayList<Data> inputData;
     private ArrayList<Data> outputData;
+    
+    private FunctionBlockCoordinates fbCoordinates;
+    private CreateLabelPanel labelPanel;
  
 
     public functionBlock(String comment, String name, String type, double locationX, double locationY, ArrayList<FBPara> fbParameters) {
@@ -39,6 +48,44 @@ public class functionBlock {
         this.locationX = locationX;
         this.locationY = locationY;
         this.fbParameters = fbParameters;
+        this.isComplete = false;
+    }
+    
+    public void fetchValueIntoField(){
+        if(fbParameters != null){
+            
+            for(FBPara fbPara: fbParameters){
+                if(inputEvent != null){
+                    for(Event e: inputEvent){
+                        if(fbPara.getName().equals(e.getName())){
+                            e.setInitialValue(fbPara.getValue());
+                        }
+                    }
+                }
+                if(outputEvent != null){
+                    for(Event e:outputEvent){
+                        if(fbPara.getName().equals(e.getName())){
+                            e.setInitialValue(fbPara.getValue());
+                        }
+                    }
+                }
+                if(inputData != null){
+                    for(Data d:inputData){
+                        if(fbPara.getName().equals(d.getName())){
+                            d.setInitialValue(fbPara.getValue());
+                        }
+                    }
+                }
+                if(outputData != null){
+                    for(Data d:outputData){
+                        if(fbPara.getName().equals(d.getName())){
+                            d.setInitialValue(fbPara.getValue());
+                        }
+                    }
+                }
+            }
+            
+        }
     }
 
     public void setInnerComment(String InnerComment) {
@@ -135,6 +182,46 @@ public class functionBlock {
 
     public ArrayList<Data> getOutputData() {
         return outputData;
+    }
+    
+    public FunctionBlockCoordinates getFunctionBlockCoordinates() {
+        return this.fbCoordinates;
+    }
+    
+    public void setFunctionBlockCoordiantes(FunctionBlockCoordinates coordinates){
+        this.fbCoordinates = coordinates;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setCompleteness(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public CreateLabelPanel getLabelPanel() {
+        return labelPanel;
+    }
+
+    public void setLabelPanel(CreateLabelPanel labelPanel) {
+        this.labelPanel = labelPanel;
     }
     
     
